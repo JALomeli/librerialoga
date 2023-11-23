@@ -1,31 +1,129 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import {Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 //peticion a la api
-export async function getServerSideProps(){
-    const res = await axios.get('http://localhost:3000/api/dbpage5');
-    const data = await res.data;
-    return{
-        props:{
-            data
-        }
-    }
-}
+//export async function getServerSideProps(){
+//    const res = await axios.get('http://localhost:3000/api/dbpage');
+//    const data = await res.data;
+//    return{
+//        props:{
+//            data
+//        }
+//    }
+//}
  
 
-export default function Testdb({data}) {
-    console.log(data) 
+export default function Testdb() {
+    const [data, setData] = useState([{}]);
+    const [loading, setLoading] = useState(false);
+    const [nombreGerente, setNombreGerente] = useState('');
+    const [direccion, setDireccion] = useState('');
+    const [correo, setCorreo] = useState('');
+    const [ciudad, setCiudad] = useState('');
+    const [telefono, setTelefono] = useState('');
+
+
+//1 poner boton
+//2 click al boton cambie el estado a true DONE
+//3 espero 10 segundos DONE
+//4 cambio el estado a false
+
+ //   const handleLoading = () => {
+ //       setLoading(true);
+ //       setTimeout(() => {
+ //           setLoading(false);
+ //       }, 10000);
+ //   }
+useEffect(() => {
+    console.log('useEffect')
+
+    getData();
+}, [])
+const getData = async () => {
+    const res = await axios.get('/api/dbpage5');
+    const data = await res.data;
+    setData(data);
+} 
+
+const sendData = async () => {
+    setLoading(true);
+    console.log('sendData');
+    console.log(nombreGerente, correo, direccion, ciudad, telefono);
+    if(nombreGerente === '' ||  correo === '' || direccion === '' || ciudad === '' || telefono === '' ){
+        toast.error('Llena todos los campos');
+        setLoading(false);
+        return;
+    }
+
+    try{
+
+        const resultado = await axios.post('api/dbpage5', {
+            nombreGerente: nombreGerente,
+            correo: correo,
+            direccion: direccion,
+            ciudad: ciudad,
+            telefono: telefono,
+        })
+        toast.success('Datos enviados');
+        console.log(resultado);
+        getData();
+    } catch (error) {
+        console.log(error);
+    }
+
+    setLoading(false);
+}
+const eliminarData =async(id)=>{
+    console.log('eliminarData', id);
+    try{
+    const resultado = await axios.delete(`api/dbpage5?id=${id}`);
+    console.log(resultado);
+    toast.success('Datos eliminados');
+    getData();
+    }catch(error){
+        console.log(error);
+        toast.error("carnal paso algo")
+    }
+}
     return (
         <>
+        
+        <Toaster/>
+        <div className= 'flex'>
+            
+{/* boton de carga */}
+{loading ? (
+    <button className='bg-red-500' disabled>Detener</button>
+    ):(
+    <button className='bg-green-500' onClick={sendData}>Iniciar</button>
+    )}
+        </div>
+        {/* formulario */}
+        <div className= 'flex flex-col text-black'>
+            <input type='text' placeholder='Nombre Gerente' onChange={(e)=>setNombreGerente(e.target.value)}/>
+            <input type='text' placeholder='Correo' onChange={(e)=>setCorreo(e.target.value)}/>
+            <input type='text' placeholder='Direccion' onChange={(e)=>setDireccion(e.target.value)}/>
+            <input type='text' placeholder='Ciudad' onChange={(e)=>setCiudad(e.target.value)}/>
+            <input type='text' placeholder='Telefono' onChange={(e)=>setTelefono(e.target.value)}/>
+
+        </div>
         <main className = 'h-screen w-screen bg-black'>
        {/*<h1 className = 'text-4xl text-center'>{data[0].Nombre}</h1>*/}
-       {data.map((sucursal)=>(
-        <div className= 'flex' key={sucursal.nombreGerente}>
+       {data.map((sucursal,i)=>(
+        <div className= 'flex' key={i}>
+            <h1 className= 'text-white'>{sucursal.nombreGerente}</h1>
+            <h1 className= 'text-white'>{sucursal.correo}</h1>
             <h1 className= 'text-white'>{sucursal.direccion}</h1>
-            <h2 className= 'text-xs'>{sucursal.correo}</h2>
+            <h1 className= 'text-white'>{sucursal.ciudad}</h1>
+            <h2 className= 'text-xs text-white'>{sucursal.telefono}</h2>
+            {/* boton para eliminar */}
+            <button className='bg-red-500' onClick={()=>eliminarData(sucursal.PKid)}>Eliminar</button>
             </div>
        ))}
         </main>
+        
         </>
     )
 }
