@@ -86,40 +86,43 @@ const eliminarData =async(id)=>{
         toast.error("carnal paso algo")
     }
 }
-    return (
-        <>
-        
-        <Toaster/>
-        <div className= 'flex'>
-            
-{/* boton de carga */}
-{loading ? (
-    <button className='bg-red-500' disabled>Detener</button>
-    ):(
-    <button className='bg-green-500' onClick={sendData}>Iniciar</button>
-    )}
-        </div>
-        {/* formulario */}
-        <div className= 'flex flex-col text-black'>
-            <input type='text' placeholder='Nombre' onChange={(e)=>setNombre(e.target.value)}/>
-            <input type='text' placeholder='Apellidos' onChange={(e)=>setApellidos(e.target.value)}/>
-            <input type='text' placeholder='Correo' onChange={(e)=>setCorreo(e.target.value)}/>
-            <input type='text' placeholder='Matricula' onChange={(e)=>setMatricula(e.target.value)}/>
-            <input type='text' placeholder='Edad' onChange={(e)=>setEdad(e.target.value)}/>
-        </div>
-        <main className = 'h-screen w-screen bg-black'>
-       {/*<h1 className = 'text-4xl text-center'>{data[0].Nombre}</h1>*/}
-       {data.map((alumno,i)=>(
-        <div className= 'flex' key={i}>
-            <h1 className= 'text-white'>{alumno.edad}</h1>
-            <h1 className= 'text-white'>{alumno.Nombre}</h1>
-            <h2 className= 'text-xs text-white'>{alumno.apellidos}</h2>
+return (
+    <>
+      <Toaster />
+      <header className="bg-yellow-500 text-black text-4xl text-center py-4">
+        Libreria
+      </header>
+      <div className="flex justify-center items-center h-60 bg-yellow-100 flex-col">
+  {/* formulario */}
+  <h1 className="flex flex-col text-black mt-2 p-3 font-bold">Porfavor inserta los datos que deseas guardar   </h1>
+  <div className="flex justify-center items-center h-70 bg-yellow-100 flex-col border border-black">
+    <input type="text" placeholder="Nombre" onChange={(e) => setNombre(e.target.value)}/>
+    <input type="text" placeholder="Apellidos" onChange={(e) => setApellidos(e.target.value)}/>
+    <input type="text" placeholder="Correo" onChange={(e) => setCorreo(e.target.value)}/>
+    <input type="text" placeholder="Matricula" onChange={(e) => setMatricula(e.target.value)}/>
+    <input type="text" placeholder="Edad" onChange={(e) => setEdad(e.target.value)}/>
+  </div>
+
+  {/* boton de carga */}
+  {loading ? (
+    <button className="bg-red-500 text-black py-2 px-4 mt-4 mt-1 rounded-md border border-black" disabled> Detener </button>
+  ) : (
+    <button className="bg-green-500 text-black py-2 px-4 mt-4 mt-1 rounded-md border border-black hover:bg-green-700 transition duration-300" onClick={sendData}>Iniciar</button>
+  )}
+</div>
+      <main className="h-screen bg-white p-4">
+        {data.map((alumno, i) => (
+          <div className="flex items-center  justify-center items-center border-b-2 py-2" key={i}>
+            <div className="text-black font-bold mr-4 ml-4">Edad: {alumno.edad}</div>
+            <div className="text-black  mr-4 ml-4">Nombre: {alumno.Nombre}</div>
+            <div className="text-sm text-black mr-4 ml-4">Apellidos: {alumno.apellidos}</div>
             {/* boton para eliminar */}
-            <button className='bg-red-500' onClick={()=>eliminarData(alumno.PKid)}>Eliminar</button>
-            </div>
-       ))}
-        </main>
-        
-        </>
-    )
+            <button className="bg-red-500 text-white font-bold px-2 py-1 hover:bg-red-700 transition duration-300" onClick={() => eliminarData(alumno.PKid)}>
+              Eliminar
+            </button>
+          </div>
+        ))}
+      </main>
+    </>
+  );
 }
