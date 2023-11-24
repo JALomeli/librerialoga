@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import {Toaster } from 'react-hot-toast'
 import toast from 'react-hot-toast'
+import Popup from '@/components/Popup'
 
 //peticion a la api
 //export async function getServerSideProps(){
@@ -23,6 +24,8 @@ export default function Testdb() {
     const [correo, setCorreo] = useState('');
     const [matricula, setMatricula] = useState('');
     const [edad, setEdad] = useState('');
+    const [open, setOpen] = useState(false)
+    const [alumno, setAlumno] = useState({})
 
 //1 poner boton
 //2 click al boton cambie el estado a true DONE
@@ -92,6 +95,9 @@ return (
       <header className="bg-yellow-500 text-black text-4xl text-center py-4">
         Libreria
       </header>
+
+      <Popup open={open} setOpen={setOpen} alumno={alumno} getData={getData}/>
+
       <div className="flex justify-center items-center h-60 bg-yellow-100 flex-col">
   {/* formulario */}
   <h1 className="flex flex-col text-black mt-2 p-3 font-bold">Porfavor inserta los datos que deseas guardar   </h1>
@@ -117,8 +123,15 @@ return (
             <div className="text-black  mr-4 ml-4">Nombre: {alumno.Nombre}</div>
             <div className="text-sm text-black mr-4 ml-4">Apellidos: {alumno.apellidos}</div>
             {/* boton para eliminar */}
-            <button className="bg-red-500 text-white font-bold px-2 py-1 hover:bg-red-700 transition duration-300" onClick={() => eliminarData(alumno.PKid)}>
+            <button className="bg-red-500 text-white font-bold px-2 py-1 hover:bg-red-800 transition duration-300" onClick={() => eliminarData(alumno.PKid)}>
               Eliminar
+            </button>
+            <button className="bg-blue-500 text-white font-bold px-2 py-1 hover:bg-blue-800 transition duration-300" onClick={() => 
+            (
+              setAlumno(alumno),
+              setOpen(true)
+            )}>
+              Editar
             </button>
           </div>
         ))}
