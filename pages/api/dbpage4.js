@@ -60,5 +60,21 @@ case "POST":
                 }
             });
             break;
+        case "PUT":
+            console.log(body)
+            connection.query(
+                'UPDATE libros SET titulo = ?, autor = ?, paginas = ?, editorial = ?, categoria = ? WHERE PKid = ?',
+                [body.titulo, body.autor,body.paginas,body.editorial,body.categoria, body.id],
+                function (err, results, fields) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({error: err});
+                    } else{
+                        console.log(results);
+                        connection.end();
+                        return res.status(200).json(results);
+                    }
+                });
+                break;
 }
 }

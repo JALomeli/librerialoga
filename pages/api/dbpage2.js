@@ -30,8 +30,8 @@ break;
 
 case "POST":
     console.log(body);
-    connection.query('INSERT INTO comentarios (nombreUsuario, libro, comentario, calificacion, etiqueta) VALUES (?,?,?,?,?)',
-    [body.Nombre, body.libro,body.comentario,body.calificacion,body.etiqueta], 
+    connection.query('INSERT INTO comentarios (comentario, libro, calificacion, nombreUsuario, etiqueta) VALUES (?,?,?,?,?)',
+    [body.comentario, body.libro,body.calificacion,body.nombreUsuario,body.etiqueta], 
     function (err, results, fields) {
         if (err) {
             console.log(err);
@@ -60,5 +60,21 @@ case "POST":
                 }
             });
             break;
+        case "PUT":
+            console.log(body)
+            connection.query(
+                'UPDATE comentarios SET comentario = ?, libro = ?, calificacion = ?, nombreUsuario = ?, etiqueta = ? WHERE PKid = ?',
+                [body.comentario, body.libro,body.calificacion,body.nombreUsuario,body.etiqueta, body.id],
+                function (err, results, fields) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({error: err});
+                    } else{
+                        console.log(results);
+                        connection.end();
+                        return res.status(200).json(results);
+                    }
+                });
+                break;
 }
 }

@@ -60,5 +60,21 @@ case "POST":
                 }
             });
             break;
+        case "PUT":
+            console.log(body)
+            connection.query(
+                'UPDATE sucursal SET nombreGerente = ?, direccion = ?, correo = ?, ciudad = ?, telefono = ? WHERE PKid = ?',
+                [body.nombreGerente, body.direccion,body.correo,body.ciudad,body.telefono, body.id],
+                function (err, results, fields) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({error: err});
+                    } else{
+                        console.log(results);
+                        connection.end();
+                        return res.status(200).json(results);
+                    }
+                });
+                break;
 }
 }

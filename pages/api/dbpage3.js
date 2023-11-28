@@ -60,5 +60,21 @@ case "POST":
                 }
             });
             break;
+        case "PUT":
+            console.log(body)
+            connection.query(
+                'UPDATE empleados SET matricula = ?, nombres = ?, apellidos = ?, horarioTrabajo = ?, cargo = ?, salario = ? WHERE PKid = ?',
+                [body.matricula, body.nombres,body.apellidos,body.horarioTrabajo,body.cargo, body.salario, body.id],
+                function (err, results, fields) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({error: err});
+                    } else{
+                        console.log(results);
+                        connection.end();
+                        return res.status(200).json(results);
+                    }
+                });
+                break;
 }
 }
