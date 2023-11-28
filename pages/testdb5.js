@@ -95,7 +95,6 @@ return (
       <header className="bg-yellow-500 text-black text-4xl text-center py-4">
         Libreria
       </header>
-
       <Popup5 open={open} setOpen={setOpen} sucursal={sucursal} getData={getData}/>
 
       <div className="flex justify-center items-center h-60 bg-yellow-100 flex-col">

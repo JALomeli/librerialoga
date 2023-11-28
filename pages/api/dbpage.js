@@ -4,10 +4,10 @@ export default function handler(req, res) {
     const{method, body, query} = req;
         //configurar la base de datos
         const connection = mysql.createConnection({
-            host: 'localhost',
+            host: process.env.MYSQL_HOST,
             port: 3306,
-            user: "root",
-            password: "password",
+            user: process.env.MYSQL_USER,
+            password: process.env.MYSQL_PASSWORD,
             database: "bibliotecacurso"
         });
     switch(method){
