@@ -12,6 +12,7 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "axios": "^1.6.2",
+    "mongodb": "^6.3.0",
     "mysql2": "^3.6.3",
     "next": "13.5.6",
     "react": "^18",
